@@ -154,10 +154,11 @@ control ingress () {
         my_input.new_hop = hash3(sport, dport, arrival) % NUM_HOPS;
         flowlet_reg.copy_to_update_input(my_input);
         // After the call to copy_to_update_input(), the next time
-        // that flowlet_reg.update() is called by this packet, its
-        // 'input' parameter will contain the value of my_input, at
-        // the last time the copy_to_update_input() method was called
-        // by this packet.
+        // that flowlet_reg.perform_update() is called by this packet,
+        // the 'input' parameter of the 'update' method will contain
+        // the value of my_input, at the last time the
+        // copy_to_update_input() method was called by this packet
+        // before it called 'perform_update'.
     
         flowlet_reg.perform_update();
 
