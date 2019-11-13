@@ -18,17 +18,17 @@
 // 'like_a_register' used here.
 
 // Basically it is similar to a P4_16 v1model register extern, in that
-// it maintains internal state that is an array of identical data
-// values.  It has many differences in how it is accessed.  Instead of
-// read() and write() methods, it has the methods described below.
+// it maintains internal state that is an array of values.  It has
+// many differences in how it is accessed.  Instead of read() and
+// write() methods, it has the methods described below.
 
 // Method 'copy_to_update_input' copies data from the user's P4
-// program, given as parameters to this method, into the internal
-// state of the extern.  That data is associated with the current
-// packet being processed by the caller.  The storage inside the
-// extern remembers that this data was associated with the packet that
-// called this method, and is allowed to forget the data when the
-// packet is done executing its current top-level control.
+// program, given as parameters, into the internal state of the
+// extern.  That data is associated with the current packet being
+// processed by the caller.  The storage inside the extern remembers
+// that this data was associated with the packet that called this
+// method, and is allowed to forget the data when the packet is done
+// executing its current top-level control.
 
 // The 'copy_to_update_input' method is basically a work-around for the
 // restriction that neither the extern nor its
@@ -112,8 +112,6 @@ struct FlowletState_t {
 }
 
 struct FlowletUpdateInput_t {
-    bit<16> sport;
-    bit<16> dport;
     Hop_t new_hop;
     Timestamp_t arrival;
 }
@@ -153,8 +151,6 @@ control ingress () {
         flowlet_reg.set_update_index(id);
 
         my_input.arrival = arrival;
-        my_input.sport = sport;
-        my_input.dport = dport;
         my_input.new_hop = hash3(sport, dport, arrival) % NUM_HOPS;
         flowlet_reg.copy_to_update_input(my_input);
         // After the call to copy_to_update_input(), the next time
