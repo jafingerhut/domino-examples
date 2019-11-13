@@ -1,5 +1,4 @@
 struct Packet {
-  int sport;
   int rdata;
   int ttl;
   int id;
